@@ -61,9 +61,18 @@ jobs:
       - name: 编译 APK
         run: |
           chmod +x gradlew
+          echo "jniLibs:"; ls -l ../toolchains/out/jniLibs/arm64-v8a | head -12
           ./gradlew :app:assembleDebug --no-daemon \
-            -Pdsh.engineOut="$PWD/toolchains/out/engine"
+            -Pdsh.engineOut="$PWD/toolchains/out/engine" \
+            -Pdsh.nativeOut="$PWD/../toolchains/out/jniLibs"
 
+      - name: 检查 APK 内容
+        run: |
+          APK=$(ls app/build/outputs/apk/debug/*.apk)
+          ls -l "$APK"
+          unzip -l "$APK" | grep -E "lib/arm64-v8a/|assets/engine.zip|assets/shizuku" | sort -k1 -rn | head -20
+          echo "--- 目录汇总"
+          unzip -l "$APK" | awk 'NR>3{print $1, $4}' | sed -n 's#^\([0-9]*\) \([a-z]*\)/.*#\2#p' | sort | uniq -c
       - name: 上传产物
         uses: actions/upload-artifact@v4
         with:

@@ -231,7 +231,7 @@ private fun GeneralSection(vm: SettingsViewModel) {
                 { vm.setTheme(listOf(ThemeMode.Light, ThemeMode.Dark, ThemeMode.System)[it]) })
         }
         SettingsRow(stringResource(R.string.set_skin), stringResource(R.string.set_skin_desc), stacked = true) {
-            SkinRow(s.skin) { vm.setSkin(it) }
+            SkinRow(selected = s.skin, onSelect = { vm.setSkin(it) })
         }
         // In-app language picker (#40): 跟随系统 + the languages in locales_config (AppLanguage).
         val languages = remember { AppLanguage.supported(context) }

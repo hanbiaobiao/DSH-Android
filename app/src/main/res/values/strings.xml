@@ -445,6 +445,17 @@
     <string name="theme_light">浅色</string>
     <string name="theme_dark">深色</string>
     <string name="theme_system">跟随系统</string>
+    <string name="set_skin">主题皮肤</string>
+    <string name="set_skin_desc">移植自网页版 dream-skin 的 8 套主题，配色作用于整个 App</string>
+    <string name="skin_default">默认</string>
+    <string name="skin_mist">干净明亮</string>
+    <string name="skin_ivory">iOS 扁平</string>
+    <string name="skin_rose">Material 粉</string>
+    <string name="skin_abyss">沉静蓝</string>
+    <string name="skin_aurora">极光青</string>
+    <string name="skin_nebula">星云紫</string>
+    <string name="skin_ember">余烬橙</string>
+    <string name="skin_midnight">子夜黑</string>
     <string name="set_language">语言</string>
     <string name="set_language_desc">DSH 的界面语言，跟随系统或固定为某种语言</string>
     <string name="language_system">跟随系统</string>

@@ -65,6 +65,8 @@ data class Settings(
     val dailyTokenLimit: Long = 0,
     val sessionTokenLimit: Long = 0,
     val theme: ThemeMode = ThemeMode.System,
+    /** 主题皮肤 (设置 → 通用 → 外观): a DshSkin id, "" = the built-in Light/Dark/System palette. */
+    val skin: String = "",
     val workDetails: WorkDetails = WorkDetails.Standard,
     val busySend: BusySend = BusySend.Queue,
     val defaultPreset: PermissionPreset = PermissionPreset.Full,
@@ -138,6 +140,7 @@ class SettingsRepository @Inject constructor(@ApplicationContext private val con
         val dailyTokens = longPreferencesKey("daily_tokens")
         val sessionTokens = longPreferencesKey("session_tokens")
         val theme = stringPreferencesKey("theme")
+        val skin = stringPreferencesKey("skin")
         val workDetails = stringPreferencesKey("work_details")
         val busySend = stringPreferencesKey("busy_send")
         val preset = stringPreferencesKey("default_preset")
@@ -175,6 +178,7 @@ class SettingsRepository @Inject constructor(@ApplicationContext private val con
         dailyTokenLimit = this[K.dailyTokens] ?: 0,
         sessionTokenLimit = this[K.sessionTokens] ?: 0,
         theme = this[K.theme]?.let { v -> ThemeMode.entries.firstOrNull { it.name == v } } ?: ThemeMode.System,
+        skin = this[K.skin] ?: "",
         workDetails = this[K.workDetails]?.let { v -> WorkDetails.entries.firstOrNull { it.name == v } } ?: WorkDetails.Standard,
         busySend = this[K.busySend]?.let { v -> BusySend.entries.firstOrNull { it.name == v } } ?: BusySend.Queue,
         defaultPreset = PermissionPreset.of(this[K.preset]),
@@ -240,6 +244,8 @@ class SettingsRepository @Inject constructor(@ApplicationContext private val con
         it[K.dailyTokens] = daily; it[K.sessionTokens] = session
     }
     suspend fun setTheme(mode: ThemeMode) = context.store.edit { it[K.theme] = mode.name }
+    /** "" restores the built-in palette. */
+    suspend fun setSkin(id: String) = context.store.edit { it[K.skin] = id }
     suspend fun setWorkDetails(v: WorkDetails) = context.store.edit { it[K.workDetails] = v.name }
     suspend fun setBusySend(v: BusySend) = context.store.edit { it[K.busySend] = v.name }
     suspend fun setDefaultPreset(p: PermissionPreset) = context.store.edit { it[K.preset] = p.id }

@@ -445,6 +445,17 @@
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
     <string name="theme_system">System</string>
+    <string name="set_skin">Theme skins</string>
+    <string name="set_skin_desc">Eight themes ported from the web-only dream-skin; they recolour the whole app</string>
+    <string name="skin_default">Default</string>
+    <string name="skin_mist">Clear Bright</string>
+    <string name="skin_ivory">iOS Flat</string>
+    <string name="skin_rose">Material Pink</string>
+    <string name="skin_abyss">Deep Blue</string>
+    <string name="skin_aurora">Aurora Green</string>
+    <string name="skin_nebula">Nebula Purple</string>
+    <string name="skin_ember">Ember Amber</string>
+    <string name="skin_midnight">Midnight OLED</string>
     <string name="set_language">Language</string>
     <string name="set_language_desc">DSH\'s interface language: follow the system or pick one</string>
     <string name="language_system">System</string>

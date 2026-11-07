@@ -105,7 +105,7 @@ class QuickActivity : ComponentActivity() {
             val loaded by settingsRepo.settings.collectAsStateWithLifecycle(null)
             // Wait for the stored theme: no one-frame flash of the default theme.
             val settings = loaded ?: return@setContent
-            DshTheme(settings.theme) {
+            DshTheme(settings.theme, settings.skin) {
                 val c = Dsh.colors
                 val live by vm.live.collectAsStateWithLifecycle()
                 val conv by vm.conversation.collectAsStateWithLifecycle()

@@ -67,9 +67,9 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(settings: SettingsRepository, secrets: SecretStore, account: AccountRepository) : ViewModel() {
     private val deepSeek = secrets.read() != null || account.signedIn
-    /** null = still loading (keeps the splash up). Second: a model credential exists — an API key, a
+    /** null = still loading (keeps the splash up). First: theme, second: skin id, third: a model credential exists — an API key, a
      *  DeepSeek account login (cached from the engine), or an enabled third-party provider. */
-    val boot = settings.settings.map { it.theme to (deepSeek || it.providers.any { p -> p.enabled }) }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
+    val boot = settings.settings.map { Triple(it.theme, it.skin, deepSeek || it.providers.any { p -> p.enabled }) }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
 }
 
 /**
@@ -106,9 +106,10 @@ class MainActivity : ComponentActivity() {
             val vm: MainViewModel = hiltViewModel()
             val boot by vm.boot.collectAsStateWithLifecycle()
             val theme = boot?.first
+            val skin = boot?.second
             // Until the theme is known and the first page chosen (home / onboarding).
             splash.setKeepOnScreenCondition { theme == null || !navReady }
-            DshTheme(theme ?: ThemeMode.System) {
+            DshTheme(theme ?: ThemeMode.System, skin) {
                 val c = Dsh.colors
                 LaunchedEffect(c.isDark) { account.darkTheme = c.isDark }
                 // 用浏览器登录 (#49): the authorization page in a Custom Tab on top of this task.
@@ -126,7 +127,7 @@ class MainActivity : ComponentActivity() {
                 val platformPage by account.page.collectAsStateWithLifecycle()
                 CompositionLocalProvider(LocalAccount provides account) {
                     Box(Modifier.fillMaxSize().background(c.bgBase)) {
-                        boot?.let { AppNav(it.second, platformPage) }
+                        boot?.let { AppNav(it.third, platformPage) }
                         AccountToastHost(account)
                         // The update prompt (AppUpdater), over whatever page is showing.
                         io.github.jackwener.dsh.feature.update.UpdateHost(updater)

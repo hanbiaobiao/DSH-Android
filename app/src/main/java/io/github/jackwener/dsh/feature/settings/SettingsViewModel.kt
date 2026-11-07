@@ -170,6 +170,7 @@ class SettingsViewModel @Inject constructor(
     /** 推理强度 of a third-party model as the default for new conversations (#46/#53; [level] null = the model's default). */
     fun setReasoningChoice(provider: String, model: String, level: String?) = viewModelScope.launch { repo.setReasoningChoice(provider, model, level) }
     fun setTheme(t: ThemeMode) = viewModelScope.launch { repo.setTheme(t) }
+    fun setSkin(id: String) = viewModelScope.launch { repo.setSkin(id) }
     fun setWorkDetails(w: WorkDetails) = viewModelScope.launch { repo.setWorkDetails(w) }
     fun setBusySend(b: BusySend) = viewModelScope.launch { repo.setBusySend(b) }
     fun setDefaultPreset(p: PermissionPreset) = viewModelScope.launch { repo.setDefaultPreset(p) }

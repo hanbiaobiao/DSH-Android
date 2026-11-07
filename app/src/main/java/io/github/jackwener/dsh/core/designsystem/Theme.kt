@@ -86,9 +86,14 @@ val Hairline = 0.5.dp
 val LocalReducedMotion = staticCompositionLocalOf { false }
 
 @Composable
-fun DshTheme(mode: ThemeMode = ThemeMode.System, content: @Composable () -> Unit) {
-    val dark = when (mode) { ThemeMode.System -> isSystemInDarkTheme(); ThemeMode.Dark -> true; ThemeMode.Light -> false }
-    val colors = if (dark) DarkDsh else LightDsh
+fun DshTheme(mode: ThemeMode = ThemeMode.System, skinId: String? = null, content: @Composable () -> Unit) {
+    // 选中的皮肤自己决定明暗（和 dream-skin 的 colorScheme 一样）；没选皮肤才跟随 Light/Dark/System。
+    val skin = remember(skinId) { DshSkin.byId(skinId) }
+    val dark = skin?.isDark ?: when (mode) { ThemeMode.System -> isSystemInDarkTheme(); ThemeMode.Dark -> true; ThemeMode.Light -> false }
+    val colors = remember(dark, skin) {
+        val base = if (dark) DarkDsh else LightDsh
+        if (skin != null) base.withSkin(skin) else base
+    }
     val context = LocalContext.current
     val reduced = remember { Settings.Global.getFloat(context.contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f) == 0f }
     // System-bar icons follow the in-app theme, not the system night mode (enableEdgeToEdge's default).

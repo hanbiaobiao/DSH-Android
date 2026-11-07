@@ -49,6 +49,10 @@ android {
         }
     }
     buildTypes {
+        debug {
+            // 和官方版共存：applicationId 加 .skin 后缀，签名不冲突就不用卸载官方版。
+            applicationIdSuffix = ".skin"
+        }
         release {
             // R8 stays off until a minified build has been verified on a device.
             isMinifyEnabled = false
